@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
+
+	"github.com/pkg/errors"
 )
 
 type InventoryFile struct {
@@ -21,13 +21,8 @@ type Meta struct {
 	Hostvars map[string]map[string]string `json:"hostvars"`
 }
 
-func main() {
-	p, err := NewProvider(DEFAULT_CONNECT_URI)
-	if err != nil {
-		fmt.Printf("unable to create libvirt provider: %v", err)
-		os.Exit(1)
-	}
-	domains, _ := p.ListDomains()
+func (i *InventoryFile) GenerateFromInventory(inv Inventory) ([]byte, error) {
+	domains, _ := inv.ListDomains()
 	active := Group{
 		Hosts: make([]string, len(domains)),
 		Vars:  make(map[string]string),
@@ -35,9 +30,10 @@ func main() {
 	for i, d := range domains {
 		active.Hosts[i] = d.GetIP()
 	}
-	i := InventoryFile{Active: active}
-
-	inv, _ := json.Marshal(i)
-	fmt.Println(string(inv))
-
+	i.Active = active
+	file, err := json.Marshal(i)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to convert struct to json")
+	}
+	return file, nil
 }
