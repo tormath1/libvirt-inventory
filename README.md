@@ -19,6 +19,5 @@ $ ansible -m ping -i ./inventory all
 ### Todo
 
 - [ ] customizable (URI, etc.)
-- [ ] add unit tests
 - [ ] handle different network interfaces
 - [ ] handle differents "tag" using name of the domains ?
