@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -96,16 +94,4 @@ func (p *provider) ListDomains() ([]Domain, error) {
 		}
 	}
 	return list, nil
-}
-
-func main() {
-	p, err := NewProvider(DEFAULT_CONNECT_URI)
-	if err != nil {
-		fmt.Printf("unable to create libvirt provider: %v", err)
-		os.Exit(1)
-	}
-	domains, _ := p.ListDomains()
-	for _, d := range domains {
-		fmt.Printf("%s\t%s\n", d.GetName(), d.GetIP())
-	}
 }
