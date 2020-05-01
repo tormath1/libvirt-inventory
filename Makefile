@@ -3,3 +3,6 @@ build:
 
 clean:
 	@rm inventory
+
+test:
+	@go test ./...
