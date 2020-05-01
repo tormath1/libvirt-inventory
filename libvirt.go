@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/pkg/errors"
 
@@ -50,6 +51,22 @@ func NewProvider(URI string) (*provider, error) {
 	}, err
 }
 
+func (p *provider) getIP(domain libvirt.Domain) (string, error) {
+	ifaces, err := domain.ListAllInterfaceAddresses(libvirt.DOMAIN_INTERFACE_ADDRESSES_SRC_LEASE)
+	if err != nil {
+		return "n/a", errors.Wrapf(err, "unable to list all interface addresses: %v", err)
+	}
+	for _, iface := range ifaces {
+		// TODO: handle different patterns
+		if strings.Contains(iface.Name, "vnet") {
+			if len(iface.Addrs) >= 1 {
+				return iface.Addrs[0].Addr, nil
+			}
+		}
+	}
+	return "n/a", nil
+}
+
 // ListDomains returns the list of libvirt domains
 // on the host
 func (p *provider) ListDomains() ([]Domain, error) {
@@ -60,11 +77,22 @@ func (p *provider) ListDomains() ([]Domain, error) {
 	}
 	list := make([]Domain, len(domains))
 	for i, d := range domains {
-		if name, err := d.GetName(); err == nil {
-			list[i] = &domain{
-				name: name,
-				ip:   "n/a",
-			}
+		var (
+			name string
+			ip   string
+		)
+		if name, err = d.GetName(); err != nil {
+			// TODO: display the error
+			continue
+		}
+		ip, err = p.getIP(d)
+		if err != nil {
+			// TODO: display the error
+			continue
+		}
+		list[i] = &domain{
+			name: name,
+			ip:   ip,
 		}
 	}
 	return list, nil
@@ -78,6 +106,6 @@ func main() {
 	}
 	domains, _ := p.ListDomains()
 	for _, d := range domains {
-		fmt.Printf("%s\n", d.GetName())
+		fmt.Printf("%s\t%s\n", d.GetName(), d.GetIP())
 	}
 }
