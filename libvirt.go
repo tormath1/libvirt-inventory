@@ -8,10 +8,6 @@ import (
 	libvirt "libvirt.org/libvirt-go"
 )
 
-var (
-	DEFAULT_CONNECT_URI = "qemu:///system"
-)
-
 type Domain interface {
 	// GetName returns the name of a domain
 	GetName() string
