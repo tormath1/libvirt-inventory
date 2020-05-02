@@ -6,3 +6,9 @@ clean:
 
 test:
 	@go test ./...
+
+install: build
+	@mv ./inventory /etc/ansible/hosts/libvirt-inventory
+
+uninstall:
+	@rm -f /etc/ansible/hosts/libvirt-inventory
