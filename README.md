@@ -10,14 +10,29 @@ $ cd libvirt-inventory
 $ make
 ```
 
-### Usage
+### Install
+
+This step will install the `inventory` into `/etc/ansible/hosts/libvirt-inventory`
 
 ```shell
-$ ansible -m ping -i ./inventory all 
+$ make && sudo make install
+```
+
+### Usage
+
+If installed:
+
+```shell
+$ ansible -m ping all
+```
+
+if just built:
+
+```shell
+$ ansible -m ping ./inventory all
 ```
 
 ### Todo
 
-- [ ] customizable (URI, etc.)
 - [ ] handle different network interfaces
 - [ ] handle differents "tag" using name of the domains ?
