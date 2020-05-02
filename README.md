@@ -1,5 +1,7 @@
 ## Ansible Libvirt dynamic inventory
 
+![Go](https://github.com/tormath1/libvirt-inventory/workflows/Go/badge.svg)
+
 Generate an Ansible dynamic inventory (all / active) from libvirt
 
 ![demo](./doc/inventory.gif)
