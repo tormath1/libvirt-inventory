@@ -2,6 +2,8 @@
 
 Generate an Ansible dynamic inventory (all / active) from libvirt
 
+![demo](./doc/inventory.gif)
+
 ### Build
 
 ```shell
