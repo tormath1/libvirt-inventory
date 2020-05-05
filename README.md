@@ -8,6 +8,8 @@ Generate an Ansible dynamic inventory (all / active) from libvirt
 
 ### Build
 
+Before building, you need at least `libvirt-dev` installed on your machine.
+
 ```shell
 $ git clone https://github.com/tormath1/libvirt-inventory
 $ cd libvirt-inventory
