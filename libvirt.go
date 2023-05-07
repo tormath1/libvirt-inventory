@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	libvirt "libvirt.org/libvirt-go"
+	"libvirt.org/go/libvirt"
 )
 
 type Domain interface {
